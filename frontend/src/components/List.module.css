@@ -1,0 +1,43 @@
+.list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.listItem {
+  background-color: white;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bookInfo {
+  display: flex;
+  align-items: center;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 4px;
+}
+
+.deleteButton {
+  background-color: var(--error-color);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+  background-color: #c0392b;
+}
