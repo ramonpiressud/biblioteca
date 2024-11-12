@@ -6,6 +6,15 @@ const BookSearch = ({ onSelectBook }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/books/search?term=${searchTerm}`);
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar livros:', error);
+    }
+  };
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchTerm) {
@@ -16,16 +25,7 @@ const BookSearch = ({ onSelectBook }) => {
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, handleSearch]);  // Adicione handleSearch como dependência
-
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/books/search?term=${searchTerm}`);
-      setSearchResults(response.data);
-    } catch (error) {
-      console.error('Erro ao buscar livros:', error);
-    }
-  };
+  }, [searchTerm]);
 
   return (
     <div>
