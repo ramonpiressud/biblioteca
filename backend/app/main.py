@@ -7,7 +7,7 @@ from .database import engine, SessionLocal, init_db
 from . import models
 import re
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 app = FastAPI()
 
@@ -17,7 +17,7 @@ init_db()
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -126,9 +126,24 @@ async def create_loan(loan: LoanCreate):
 @app.get("/loans/")
 async def get_loans():
     db = SessionLocal()
-    loans = db.query(models.Loan).all()
+    loans = (
+        db.query(models.Loan)
+        .options(joinedload(models.Loan.user), joinedload(models.Loan.book))
+        .all()
+    )
     db.close()
-    return loans
+    
+    # Incluindo título do livro e nome do usuário na resposta
+    result = []
+    for loan in loans:
+        result.append({
+            "id": loan.id,
+            "user_name": loan.user.name if loan.user else "Usuário não encontrado",
+            "book_title": loan.book.title if loan.book else "Livro não encontrado",
+            "loan_date": loan.loan_date,
+            "return_date": loan.return_date
+        })
+    return result
 
 @app.put("/loans/{loan_id}/return")
 async def return_book(loan_id: int):
