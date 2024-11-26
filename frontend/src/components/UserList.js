@@ -15,7 +15,7 @@ const UserList = ({ users, onDelete }) => {
           <div>
             <strong>Nome:</strong> {user.name}<br />
             <strong>CPF:</strong> {user.cpf}<br />
-            <strong>Data de Nascimento:</strong> {new Date(user.birth_date).toLocaleDateString()}
+            <strong>Data de Nascimento:</strong> {new Date(user.birth_date + 'T00:00:00').toLocaleDateString()}
           </div>
           <button className={styles.deleteButton} onClick={() => handleDelete(user.id)}>Excluir</button>
         </li>
